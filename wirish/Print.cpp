@@ -112,7 +112,6 @@ void Print::print(double n, int digits) {
 }
 
 void Print::println(void) {
-    print('\r');
     print('\n');
 }
 

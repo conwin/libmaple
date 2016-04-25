@@ -5,17 +5,14 @@
 ##
 ## Useful paths, constants, etc.
 ##
-
-ifeq ($(LIB_MAPLE_HOME),)
-SRCROOT := .
-else
-SRCROOT := $(LIB_MAPLE_HOME)
-endif
+LIB_MAPLE_HOME := .
+SRCROOT := user
 BUILD_PATH = build
-LIBMAPLE_PATH := $(SRCROOT)/libmaple
-WIRISH_PATH := $(SRCROOT)/wirish
-SUPPORT_PATH := $(SRCROOT)/support
-LIBRARIES_PATH := $(SRCROOT)/libraries
+
+LIBMAPLE_PATH := $(LIB_MAPLE_HOME)/libmaple
+WIRISH_PATH := $(LIB_MAPLE_HOME)/wirish
+SUPPORT_PATH := $(LIB_MAPLE_HOME)/support
+LIBRARIES_PATH := $(LIB_MAPLE_HOME)/libraries
 # Support files for linker
 LDDIR := $(SUPPORT_PATH)/ld
 # Support files for this Makefile
@@ -75,15 +72,15 @@ LDFLAGS  = $(TARGET_LDFLAGS) $(TOOLCHAIN_LDFLAGS) -mcpu=cortex-m3 -mthumb \
 ## Set all submodules here
 ##
 
-LIBMAPLE_MODULES += $(SRCROOT)/libmaple
-LIBMAPLE_MODULES += $(SRCROOT)/libmaple/usb   # The USB module is kept separate
+LIBMAPLE_MODULES += $(LIB_MAPLE_HOME)/libmaple
+LIBMAPLE_MODULES += $(LIB_MAPLE_HOME)/libmaple/usb   # The USB module is kept separate
 LIBMAPLE_MODULES += $(LIBMAPLE_MODULE_SERIES) # STM32 series submodule in libmaple
-LIBMAPLE_MODULES += $(SRCROOT)/wirish
+LIBMAPLE_MODULES += $(LIB_MAPLE_HOME)/wirish
 
 # Official libraries:
-LIBMAPLE_MODULES += $(SRCROOT)/libraries/Servo
-LIBMAPLE_MODULES += $(SRCROOT)/libraries/LiquidCrystal
-LIBMAPLE_MODULES += $(SRCROOT)/libraries/Wire
+LIBMAPLE_MODULES += $(LIB_MAPLE_HOME)/libraries/Servo
+LIBMAPLE_MODULES += $(LIB_MAPLE_HOME)/libraries/LiquidCrystal
+LIBMAPLE_MODULES += $(LIB_MAPLE_HOME)/libraries/Wire
 
 # User modules:
 ifneq ($(USER_MODULES),)
@@ -109,10 +106,10 @@ BOARD_USB_PRODUCT_ID := 0003
 
 ifeq ($(BOOTLOADER),maple)
 UPLOAD_ram   := $(SUPPORT_PATH)/scripts/reset.py && \
-                sleep 1                  && \
+                sleep 1 && \
                 $(DFU) -a0 -d $(BOARD_USB_VENDOR_ID):$(BOARD_USB_PRODUCT_ID) -D $(BUILD_PATH)/$(BOARD).bin -R
 UPLOAD_flash := $(SUPPORT_PATH)/scripts/reset.py && \
-                sleep 1                  && \
+                sleep 1 && \
                 $(DFU) -a1 -d $(BOARD_USB_VENDOR_ID):$(BOARD_USB_PRODUCT_ID) -D $(BUILD_PATH)/$(BOARD).bin -R
 endif
 
